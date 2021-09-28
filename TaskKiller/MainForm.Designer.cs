@@ -56,6 +56,7 @@ namespace TaskKiller
             this.ProcessList.Name = "ProcessList";
             this.ProcessList.Size = new System.Drawing.Size(406, 375);
             this.ProcessList.TabIndex = 0;
+            this.ProcessList.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.KillTask);
             // 
             // CloseBtn
             // 
@@ -205,7 +206,6 @@ namespace TaskKiller
             this.Opacity = 0.8D;
             this.Text = "TaskKiller";
             this.Load += new System.EventHandler(this.MainForm_Load);
-            this.Click += new System.EventHandler(this.KillTask);
             ((System.ComponentModel.ISupportInitialize)(this.ProcessList)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();

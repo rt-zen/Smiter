@@ -16,5 +16,20 @@ namespace TaskKiller
         {
             InitializeComponent();
         }
+
+        private void AboutForm_Load(object sender, EventArgs e)
+        {
+           
+        }
+
+        private void CloseForm(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void OpenGitPage(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://github.com/rt-zen");
+        }
     }
 }

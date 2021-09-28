@@ -16,6 +16,9 @@ namespace TaskKiller
         private PerformanceCounter cpuMetric = new PerformanceCounter("Processor", "% Processor Time", "_Total");
         private Timer timer = new Timer();
         private bool TimerStatus = true;
+
+        System.Diagnostics.Process CMDProcess = new System.Diagnostics.Process();
+        System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
         private List<ProcessSum> ProcessNames
         {
             get
@@ -44,13 +47,15 @@ namespace TaskKiller
             RR.Value = 500;
             timer.Tick += new EventHandler(refreshMetrics);
             timer.Start();
+            startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
+            startInfo.FileName = "cmd.exe";
         }
 
         private void CloseBtn_Click(object sender, EventArgs e)
         {
-            Close();
+            NotificationAreaIcon.Visible = false;
+            System.Windows.Forms.Application.Exit();
         }
-
 
         private void refreshMetrics(object sender, EventArgs e)
         {
@@ -80,7 +85,6 @@ namespace TaskKiller
 
         }
 
-
         private void PauseBtn_Click(object sender, EventArgs e)
         {
             if (TimerStatus)
@@ -96,11 +100,6 @@ namespace TaskKiller
             TimerStatus = !TimerStatus;
         }
 
-        private void trackBar1_Scroll(object sender, EventArgs e)
-        {
-
-        }
-
         private void ChangeRefreshRate(object sender, EventArgs e)
         {
             timer.Interval = (int)RR.Value;
@@ -111,14 +110,29 @@ namespace TaskKiller
             timer.Interval = (int)RR.Value;
         }
 
-        private void KillTask(object sender, EventArgs e)
-        {
-
-        }
-
+        //Open About Form
         private void AboutBtn_Click(object sender, EventArgs e)
         {
-            M
+            AboutForm about = new AboutForm();
+            about.Show();
         }
+
+        private void KillTask(object sender, DataGridViewCellEventArgs e)
+        {
+            System.Windows.Forms.DataGridViewRow row = ProcessList.Rows[e.RowIndex];
+            if (e.ColumnIndex == 0)
+            {
+                startInfo.Arguments = string.Format("/C taskkill.exe /PID {0} /F", row.Cells[0].Value);
+                CMDProcess.StartInfo = startInfo;
+                CMDProcess.Start();
+            }
+            if (e.ColumnIndex == 1)
+            {
+                startInfo.Arguments = string.Format("/C taskkill.exe /IM {0}.exe /F", row.Cells[1].Value);
+                CMDProcess.StartInfo = startInfo;
+                CMDProcess.Start();
+            }
+        }
+
     }
 }
