@@ -44,17 +44,23 @@ namespace TaskKiller
             this.RRLabel = new System.Windows.Forms.Label();
             this.NotificationAreaIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.AboutBtn = new System.Windows.Forms.Button();
+            this.SettingsGroupBox = new System.Windows.Forms.GroupBox();
+            this.radioBtnMilliseconds = new System.Windows.Forms.RadioButton();
+            this.radioBtnSeconds = new System.Windows.Forms.RadioButton();
+            this.HnRCheckBox = new System.Windows.Forms.CheckBox();
+            this.topSeparator = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.ProcessList)).BeginInit();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.RR)).BeginInit();
+            this.SettingsGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // ProcessList
             // 
             this.ProcessList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.ProcessList.Location = new System.Drawing.Point(0, 32);
+            this.ProcessList.Location = new System.Drawing.Point(0, 68);
             this.ProcessList.Name = "ProcessList";
-            this.ProcessList.Size = new System.Drawing.Size(406, 375);
+            this.ProcessList.Size = new System.Drawing.Size(406, 356);
             this.ProcessList.TabIndex = 0;
             this.ProcessList.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.KillTask);
             // 
@@ -89,7 +95,7 @@ namespace TaskKiller
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.StatusStrip,
             this.CPU_Bar});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 455);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 509);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(800, 22);
             this.statusStrip1.TabIndex = 3;
@@ -108,13 +114,12 @@ namespace TaskKiller
             // TitleLabel
             // 
             this.TitleLabel.AutoSize = true;
-            this.TitleLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TitleLabel.Location = new System.Drawing.Point(-5, 0);
+            this.TitleLabel.Font = new System.Drawing.Font("Segoe UI", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TitleLabel.Location = new System.Drawing.Point(5, 5);
             this.TitleLabel.Name = "TitleLabel";
-            this.TitleLabel.Padding = new System.Windows.Forms.Padding(2);
-            this.TitleLabel.Size = new System.Drawing.Size(111, 29);
+            this.TitleLabel.Size = new System.Drawing.Size(99, 40);
             this.TitleLabel.TabIndex = 4;
-            this.TitleLabel.Text = "TaskKiller";
+            this.TitleLabel.Text = "Smiter";
             // 
             // PauseBtn
             // 
@@ -137,7 +142,7 @@ namespace TaskKiller
             0,
             0,
             0});
-            this.RR.Location = new System.Drawing.Point(15, 429);
+            this.RR.Location = new System.Drawing.Point(6, 42);
             this.RR.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -149,7 +154,7 @@ namespace TaskKiller
             0,
             0});
             this.RR.Name = "RR";
-            this.RR.Size = new System.Drawing.Size(67, 16);
+            this.RR.Size = new System.Drawing.Size(67, 18);
             this.RR.TabIndex = 6;
             this.RR.Value = new decimal(new int[] {
             100,
@@ -162,16 +167,16 @@ namespace TaskKiller
             // RRLabel
             // 
             this.RRLabel.AutoSize = true;
-            this.RRLabel.Location = new System.Drawing.Point(12, 413);
+            this.RRLabel.Location = new System.Drawing.Point(79, 44);
             this.RRLabel.Name = "RRLabel";
-            this.RRLabel.Size = new System.Drawing.Size(70, 13);
+            this.RRLabel.Size = new System.Drawing.Size(72, 13);
             this.RRLabel.TabIndex = 7;
             this.RRLabel.Text = "Refresh Rate";
             // 
             // NotificationAreaIcon
             // 
             this.NotificationAreaIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("NotificationAreaIcon.Icon")));
-            this.NotificationAreaIcon.Text = "TaskKiller Running";
+            this.NotificationAreaIcon.Text = "Smiter Running";
             this.NotificationAreaIcon.Visible = true;
             // 
             // AboutBtn
@@ -186,15 +191,76 @@ namespace TaskKiller
             this.AboutBtn.UseVisualStyleBackColor = true;
             this.AboutBtn.Click += new System.EventHandler(this.AboutBtn_Click);
             // 
+            // SettingsGroupBox
+            // 
+            this.SettingsGroupBox.Controls.Add(this.radioBtnMilliseconds);
+            this.SettingsGroupBox.Controls.Add(this.radioBtnSeconds);
+            this.SettingsGroupBox.Controls.Add(this.HnRCheckBox);
+            this.SettingsGroupBox.Controls.Add(this.RR);
+            this.SettingsGroupBox.Controls.Add(this.RRLabel);
+            this.SettingsGroupBox.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SettingsGroupBox.Location = new System.Drawing.Point(412, 68);
+            this.SettingsGroupBox.Name = "SettingsGroupBox";
+            this.SettingsGroupBox.Size = new System.Drawing.Size(382, 127);
+            this.SettingsGroupBox.TabIndex = 9;
+            this.SettingsGroupBox.TabStop = false;
+            this.SettingsGroupBox.Text = "Settings";
+            // 
+            // radioBtnMilliseconds
+            // 
+            this.radioBtnMilliseconds.AutoSize = true;
+            this.radioBtnMilliseconds.Checked = true;
+            this.radioBtnMilliseconds.Location = new System.Drawing.Point(232, 42);
+            this.radioBtnMilliseconds.Name = "radioBtnMilliseconds";
+            this.radioBtnMilliseconds.Size = new System.Drawing.Size(89, 17);
+            this.radioBtnMilliseconds.TabIndex = 9;
+            this.radioBtnMilliseconds.TabStop = true;
+            this.radioBtnMilliseconds.Text = "Milliseconds";
+            this.radioBtnMilliseconds.UseVisualStyleBackColor = true;
+            this.radioBtnMilliseconds.Click += new System.EventHandler(this.ChangeRR_to_Milliseconds);
+            // 
+            // radioBtnSeconds
+            // 
+            this.radioBtnSeconds.AutoSize = true;
+            this.radioBtnSeconds.Location = new System.Drawing.Point(157, 42);
+            this.radioBtnSeconds.Name = "radioBtnSeconds";
+            this.radioBtnSeconds.Size = new System.Drawing.Size(68, 17);
+            this.radioBtnSeconds.TabIndex = 8;
+            this.radioBtnSeconds.TabStop = true;
+            this.radioBtnSeconds.Text = "Seconds";
+            this.radioBtnSeconds.UseVisualStyleBackColor = true;
+            this.radioBtnSeconds.Click += new System.EventHandler(this.ChangeRR_to_Seconds);
+            // 
+            // HnRCheckBox
+            // 
+            this.HnRCheckBox.AutoSize = true;
+            this.HnRCheckBox.Location = new System.Drawing.Point(6, 19);
+            this.HnRCheckBox.Name = "HnRCheckBox";
+            this.HnRCheckBox.Size = new System.Drawing.Size(157, 17);
+            this.HnRCheckBox.TabIndex = 0;
+            this.HnRCheckBox.Text = "Hit and Run/Win9x Mode";
+            this.HnRCheckBox.UseVisualStyleBackColor = true;
+            this.HnRCheckBox.CheckedChanged += new System.EventHandler(this.HnRCheckBoxChanged);
+            // 
+            // topSeparator
+            // 
+            this.topSeparator.BackColor = System.Drawing.SystemColors.ButtonShadow;
+            this.topSeparator.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.topSeparator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.topSeparator.Location = new System.Drawing.Point(0, 50);
+            this.topSeparator.Name = "topSeparator";
+            this.topSeparator.Size = new System.Drawing.Size(800, 2);
+            this.topSeparator.TabIndex = 10;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 477);
+            this.ClientSize = new System.Drawing.Size(800, 531);
             this.ControlBox = false;
+            this.Controls.Add(this.topSeparator);
+            this.Controls.Add(this.SettingsGroupBox);
             this.Controls.Add(this.AboutBtn);
-            this.Controls.Add(this.RRLabel);
-            this.Controls.Add(this.RR);
             this.Controls.Add(this.PauseBtn);
             this.Controls.Add(this.TitleLabel);
             this.Controls.Add(this.statusStrip1);
@@ -210,6 +276,8 @@ namespace TaskKiller
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.RR)).EndInit();
+            this.SettingsGroupBox.ResumeLayout(false);
+            this.SettingsGroupBox.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -230,6 +298,11 @@ namespace TaskKiller
         private System.Windows.Forms.Label RRLabel;
         private System.Windows.Forms.NotifyIcon NotificationAreaIcon;
         private System.Windows.Forms.Button AboutBtn;
+        private System.Windows.Forms.GroupBox SettingsGroupBox;
+        private System.Windows.Forms.CheckBox HnRCheckBox;
+        private System.Windows.Forms.Label topSeparator;
+        private System.Windows.Forms.RadioButton radioBtnMilliseconds;
+        private System.Windows.Forms.RadioButton radioBtnSeconds;
     }
 }
 

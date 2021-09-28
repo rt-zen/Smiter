@@ -16,6 +16,8 @@ namespace TaskKiller
         private PerformanceCounter cpuMetric = new PerformanceCounter("Processor", "% Processor Time", "_Total");
         private Timer timer = new Timer();
         private bool TimerStatus = true;
+        private bool HnR_Enabled = false;
+        private int multiplier = 1;
 
         System.Diagnostics.Process CMDProcess = new System.Diagnostics.Process();
         System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
@@ -102,12 +104,12 @@ namespace TaskKiller
 
         private void ChangeRefreshRate(object sender, EventArgs e)
         {
-            timer.Interval = (int)RR.Value;
+            timer.Interval = (int)RR.Value * multiplier;
         }
 
         private void ChangeRefreshRate(object sender, ScrollEventArgs e)
         {
-            timer.Interval = (int)RR.Value;
+            timer.Interval = (int)RR.Value * multiplier;
         }
 
         //Open About Form
@@ -132,7 +134,31 @@ namespace TaskKiller
                 CMDProcess.StartInfo = startInfo;
                 CMDProcess.Start();
             }
+            if (HnR_Enabled)
+            {
+                NotificationAreaIcon.Visible = false;
+                System.Windows.Forms.Application.Exit();
+            }
         }
 
+        private void HnRCheckBoxChanged(object sender, EventArgs e)
+        {
+            HnR_Enabled = HnRCheckBox.Checked;
+        }
+
+        private void ChangeRR_to_Milliseconds(object sender, EventArgs e)
+        {
+            multiplier = 1;
+            RR.Minimum = 100;
+            RR.Increment = 100;
+            timer.Interval = (int)RR.Value * multiplier;
+        }
+        private void ChangeRR_to_Seconds(object sender, EventArgs e)
+        {
+            multiplier = 1000;
+            RR.Minimum = 1;
+            RR.Increment = 1;
+            timer.Interval = (int)RR.Value * multiplier;
+        }
     }
 }

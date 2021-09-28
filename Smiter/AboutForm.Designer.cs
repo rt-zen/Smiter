@@ -52,7 +52,7 @@ namespace TaskKiller
             this.AboutLabel.AutoSize = true;
             this.AboutLabel.BackColor = System.Drawing.Color.Transparent;
             this.AboutLabel.Font = new System.Drawing.Font("Segoe UI", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AboutLabel.Location = new System.Drawing.Point(6, 5);
+            this.AboutLabel.Location = new System.Drawing.Point(5, 5);
             this.AboutLabel.Name = "AboutLabel";
             this.AboutLabel.Size = new System.Drawing.Size(96, 40);
             this.AboutLabel.TabIndex = 1;
