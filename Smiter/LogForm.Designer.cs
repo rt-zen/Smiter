@@ -102,6 +102,7 @@ namespace Smiter
             this.Name = "LogForm";
             this.Text = "Log";
             this.Load += new System.EventHandler(this.Log_Load);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.LogForm_MouseDown);
             this.ResumeLayout(false);
             this.PerformLayout();
 

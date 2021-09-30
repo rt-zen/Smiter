@@ -35,6 +35,7 @@ namespace Smiter
             this.topSeparator = new System.Windows.Forms.Label();
             this.BottomSeparator = new System.Windows.Forms.Label();
             this.gitLink = new System.Windows.Forms.LinkLabel();
+            this.ExportBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // CloseBtn
@@ -69,7 +70,6 @@ namespace Smiter
             this.topSeparator.Name = "topSeparator";
             this.topSeparator.Size = new System.Drawing.Size(598, 2);
             this.topSeparator.TabIndex = 2;
-            this.topSeparator.Click += new System.EventHandler(this.topSeparator_Click);
             // 
             // BottomSeparator
             // 
@@ -93,12 +93,26 @@ namespace Smiter
             this.gitLink.VisitedLinkColor = System.Drawing.Color.Transparent;
             this.gitLink.Click += new System.EventHandler(this.OpenGitPage);
             // 
+            // ExportBtn
+            // 
+            this.ExportBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.ExportBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ExportBtn.Font = new System.Drawing.Font("Webdings", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
+            this.ExportBtn.Location = new System.Drawing.Point(569, -1);
+            this.ExportBtn.Name = "ExportBtn";
+            this.ExportBtn.Size = new System.Drawing.Size(32, 32);
+            this.ExportBtn.TabIndex = 5;
+            this.ExportBtn.Text = "";
+            this.ExportBtn.UseVisualStyleBackColor = true;
+            this.ExportBtn.Click += new System.EventHandler(this.ExportBtn_Click);
+            // 
             // AboutForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(600, 400);
+            this.Controls.Add(this.ExportBtn);
             this.Controls.Add(this.gitLink);
             this.Controls.Add(this.BottomSeparator);
             this.Controls.Add(this.AboutLabel);
@@ -108,6 +122,7 @@ namespace Smiter
             this.Name = "AboutForm";
             this.Text = "About";
             this.Load += new System.EventHandler(this.AboutForm_Load);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.AboutForm_MouseDown);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -120,5 +135,6 @@ namespace Smiter
         private System.Windows.Forms.Label topSeparator;
         private System.Windows.Forms.Label BottomSeparator;
         public System.Windows.Forms.LinkLabel gitLink;
+        private System.Windows.Forms.Button ExportBtn;
     }
 }

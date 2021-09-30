@@ -14,6 +14,30 @@ namespace Smiter
 {
     public partial class MainForm : Form
     {
+        #region Circumvent Form not being draggeable because of no borders
+        //src https://stackoverflow.com/questions/1592876/make-a-borderless-form-movable
+        public const int WM_NCLBUTTONDOWN = 0xA1;
+        public const int HT_CAPTION = 0x2;
+
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        public static extern bool ReleaseCapture();
+
+        private void MainForm_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                ReleaseCapture();
+                SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+            }
+        }
+        #endregion
+
+
+
+        //Lists for Log events, and methods to add events to the list
         public List<LogEvent> Log = new List<LogEvent>();
         private void InsertToLog(string Event, int EventType, int EventClass)
         {
@@ -25,22 +49,26 @@ namespace Smiter
 
         //Timer object to constantly refresh the process list and CPU Usage
         private Timer timer = new Timer();
-        //Boolean used to pause or resume the timer
-        private bool TimerStatus = true;
+
         //Multiplier for selecting between seconds or milliseconds for the timer
         private int multiplier = 1;
-        //Lists for Log events, classes of events and types of events
 
 
         //Objects for calling taskkill
-        private System.Diagnostics.Process CMDProcess = new System.Diagnostics.Process();
-        private System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
+        private Process CMDProcess = new Process();
+        private ProcessStartInfo startInfo = new ProcessStartInfo();
         #endregion
         public MainForm()
         {
             InitializeComponent();
         }
 
+        private void ExceptionHandling(Exception ex, bool ThrowErrorMessage, int EventClass)
+        {
+            InsertToLog(string.Format("Exception thrown with error: {0}", ex.Message), 3, EventClass);
+            if (ThrowErrorMessage)
+                MessageBox.Show("An error occurred, please check Log for more information.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
@@ -67,7 +95,6 @@ namespace Smiter
             startInfo.CreateNoWindow = true;
             InsertToLog(string.Format("Commands Setup for executable {0}.", Executable), 0, 0);
             InsertToLog("Start-up Finished.", 1, 0);
-
         }
 
 
@@ -95,68 +122,74 @@ namespace Smiter
             InsertToLog("If you're seeing this the program did not close successfully.", 3, 2);
         }
 
-        //The method that closes the program. It first disables the notification icon, so that it doesn't remain zombified and then exits.
-        private void CloseBtn_Click(object sender, EventArgs e)
-        {
-            this.Exit();
-        }
 
         private void refreshMetrics(object sender, EventArgs e)
         {
-            if (sender.GetType() == typeof(Button))
+            try
             {
-                Button RefreshButton = (Button)sender;
-                if (RefreshButton.Name == "RefreshBtn")
+                if (sender.GetType() == typeof(Button))
                 {
-                    InsertToLog("Manual Refresh Issued.", 0, 1);
+                    Button RefreshButton = (Button)sender;
+                    if (RefreshButton.Name == "RefreshBtn")
+                    {
+                        InsertToLog("Manual Refresh Issued.", 0, 1);
+                    }
                 }
-            }
-            ProcessList.DataSource = ProcessNames;
-            float CPU_Value = cpuMetric.NextValue();
+                ProcessList.DataSource = ProcessNames;
+                float CPU_Value = cpuMetric.NextValue();
 
-            //From 0% to 50% the bar will be yellow, from 50% to 75% will be yellow, from 75% to 100% will be red 
-            if (CPU_Value < 50)
-            {
-                CPU_Bar.ForeColor = Color.Green;
-            }
-            else
-            {
-                if (CPU_Value >= 50 && CPU_Value < 75)
+                //From 0% to 50% the bar will be yellow, from 50% to 75% will be yellow, from 75% to 100% will be red 
+                if (CPU_Value < 50)
                 {
-                    CPU_Bar.ForeColor = Color.Yellow;
+                    CPU_Bar.ForeColor = Color.Green;
                 }
                 else
                 {
-                    if (CPU_Value >= 75)
+                    if (CPU_Value >= 50 && CPU_Value < 75)
                     {
-                        CPU_Bar.ForeColor = Color.Red;
+                        CPU_Bar.ForeColor = Color.Yellow;
+                    }
+                    else
+                    {
+                        if (CPU_Value >= 75)
+                        {
+                            CPU_Bar.ForeColor = Color.Red;
+                        }
                     }
                 }
+
+                //Assigning the Bar Style and percentage filled
+                CPU_Bar.Style = ProgressBarStyle.Continuous;
+                CPU_Bar.Value = (int)CPU_Value;
+            }
+            catch (Exception ex)
+            {
+                ExceptionHandling(ex, true, 1);
+                StopTimer();
             }
 
-            //Assigning the Bar Style and percentage filled
-            CPU_Bar.Style = ProgressBarStyle.Continuous;
-            CPU_Bar.Value = (int)CPU_Value;
 
         }
 
-        private void PauseBtn_Click(object sender, EventArgs e)
+
+        #region Timer Methods
+        private void StartTimer()
         {
-            //Changes the timer status and the button text to match the button action
-            if (TimerStatus)
-            {
-                timer.Stop();
-                PauseBtn.Text = "4";
-                InsertToLog("Timer Paused.", 1, 1);
-            }
-            else
-            {
-                timer.Start();
-                PauseBtn.Text = ";";
-                InsertToLog("Timer Resumed.", 1, 1);
-            }
-            TimerStatus = !TimerStatus;
+            timer.Start();
+            PauseBtn.Text = ";";
+            InsertToLog("Timer Resumed.", 1, 1);
         }
+
+        private void StopTimer()
+        {
+            timer.Stop();
+            PauseBtn.Text = "4";
+            InsertToLog("Timer Paused.", 1, 1);
+        }
+        #endregion
+
+
+
 
         #region Functions to change the Refresh Rate of the program, matching what's on the updown object
         private void ChangeRefreshRate(object sender, EventArgs e)
@@ -170,27 +203,26 @@ namespace Smiter
         }
         #endregion
 
-        //Create a About Form instance and open it
-        private void AboutBtn_Click(object sender, EventArgs e)
-        {
-            AboutForm about = new AboutForm();
-            about.Show();
-        }
 
 
         private void KillTask(object sender, DataGridViewCellEventArgs e)
         {
             try
             {
-                //TODO: Add message on bottom saying what process was killed, and maybe a log??
                 List<string> Output = new List<string>();
                 System.Windows.Forms.DataGridViewRow row = ProcessList.Rows[e.RowIndex];
                 //if user double clicked a PID
                 if (e.ColumnIndex == 0)
                 {
+                    if (ConfirmationCBox.Checked)
+                    {
+                        if (MessageBox.Show(string.Format("Are you sure you wish to terminate the process named {0} with PID {1}?", row.Cells[1].Value, row.Cells[0].Value), "Termination Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.No)
+                            return;
+
+                    }
                     bool PIDCaught = false;
-                    InsertToLog(string.Format("Process termination issued on process with ID {0}{1}.", row.Cells[0].Value, ForceClose.Checked ? " with Force flag enabled" : ""), 0, 3);
-                    startInfo.Arguments = string.Format("/C taskkill.exe /PID {0} {1}", row.Cells[0].Value, ForceClose.Checked ? "/F" : "");
+                    InsertToLog(string.Format("Process termination issued on process with ID {0}{1}.", row.Cells[0].Value, ForceClose.Checked ? " with Force flag enabled" : string.Empty), 0, 3);
+                    startInfo.Arguments = string.Format("/C taskkill.exe /PID {0} {1}", row.Cells[0].Value, ForceClose.Checked ? "/F" : string.Empty);
                     CMDProcess.StartInfo = startInfo;
                     CMDProcess.Start();
                     while (!CMDProcess.StandardOutput.EndOfStream)
@@ -198,31 +230,44 @@ namespace Smiter
                         PIDCaught = CMDProcess.StandardOutput.ReadLine().Contains("SUCCESS");
                     }
                     if (PIDCaught)
-                        InsertToLog(string.Format("Process with ID {0} was {1}terminated successfully.", row.Cells[0].Value, ForceClose.Checked ? "forcefully " : ""), 1, 3);
+                    {
+                        InsertToLog(string.Format("Process with ID {0} was {1}terminated successfully.", row.Cells[0].Value, ForceClose.Checked ? "forcefully " : string.Empty), 1, 3);
+                        LastTerminatedProcessLabel.Text = string.Format("Last terminated Process: {0} - {1}", row.Cells[0].Value, row.Cells[1].Value);
+                    }
                     else
                         throw new Exception(string.Format("No processes were found matching ID {0}", row.Cells[0].Value));
                 }
                 //if user double clicked a Process Name
                 if (e.ColumnIndex == 1)
                 {
-                    //TODO: Add confirmation message
+                    if (ConfirmationCBox.Checked)
+                    {
+                        if (MessageBox.Show(string.Format("Are you sure you wish to terminate all processes named {0}?", row.Cells[1].Value), "Termination Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.No)
+                            return;
+
+                    }
                     int instanceCount = 0;
-                    InsertToLog(string.Format("Process termination issued on all processes with name {0}{1}.", row.Cells[1].Value, ForceClose.Checked ? " with Force flag enabled" : ""), 0, 3);
-                    startInfo.Arguments = string.Format("/C taskkill.exe /IM {0}.exe {1}", row.Cells[1].Value, ForceClose.Checked ? "/F" : "");
+                    InsertToLog(string.Format("Process termination issued on all processes with name {0}{1}.", row.Cells[1].Value, ForceClose.Checked ? " with Force flag enabled" : string.Empty), 0, 3);
+                    startInfo.Arguments = string.Format("/C taskkill.exe /IM {0}.exe {1}", row.Cells[1].Value, ForceClose.Checked ? "/F" : string.Empty);
                     CMDProcess.StartInfo = startInfo;
                     CMDProcess.Start();
                     while (!CMDProcess.StandardOutput.EndOfStream) if (CMDProcess.StandardOutput.ReadLine().Contains("SUCCESS")) instanceCount++;
                     if (instanceCount > 0)
-                        InsertToLog(string.Format("{0} instances of process with the name {1} were {2}terminated successfully.", instanceCount, row.Cells[1].Value, ForceClose.Checked ? "forcefully " : ""), 1, 3);
+                    {
+                        InsertToLog(string.Format("{0} instances of process with the name {1} were {2}terminated successfully.", instanceCount, row.Cells[1].Value, ForceClose.Checked ? "forcefully " : string.Empty), 1, 3);
+                        LastTerminatedProcessLabel.Text = string.Format("Last terminated Process: {0}", row.Cells[1].Value);
+                    }
                     else
                         throw new Exception(string.Format("No processes were found matching the name {0}", row.Cells[1].Value));
                 }
+
             }
             catch (Exception ex)
             {
-                InsertToLog(string.Format("Exception thrown with error: {0}", ex.Message), 3, 3);
+                ExceptionHandling(ex, true, 3);
             }
-
+            //If enabled, will execute refreshMetrics() method, refreshing the processlist and other metrics
+            if (RefreshAfterTerminationCBox.Checked) refreshMetrics(new object(), e);
             //If enabled, will exit the program after killing whatever process was selected
             if (HnRCheckBox.Checked) this.Exit();
         }
@@ -264,9 +309,36 @@ namespace Smiter
             logForm.Show();
         }
 
+        #region Top-Right Buttons
+        private void ConfirmationCBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!ConfirmationCBox.Checked)
+            {
+                ConfirmationCBox.Checked = MessageBox.Show("Are you sure you want to disable the confirmation box for the process selection? If you do, there will be no saving from fat-fingering a selection.", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == System.Windows.Forms.DialogResult.No;
+            }
+        }
+        private void PauseBtn_Click(object sender, EventArgs e)
+        {
+            //Changes the timer status and the button text to match the button action
+            if (timer.Enabled) StopTimer();
+            else StartTimer();
+        }
+        //Create a About Form instance and open it
+        private void AboutBtn_Click(object sender, EventArgs e)
+        {
+            AboutForm about = new AboutForm();
+            about.Show();
+        }
         private void MinimizeBtn_Click(object sender, EventArgs e)
         {
             this.WindowState = FormWindowState.Minimized;
         }
+
+        //The method that closes the program. It first disables the notification icon, so that it doesn't remain zombified and then exits.
+        private void CloseBtn_Click(object sender, EventArgs e)
+        {
+            this.Exit();
+        }
+        #endregion
     }
 }

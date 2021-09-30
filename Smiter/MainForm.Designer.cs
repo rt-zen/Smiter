@@ -39,12 +39,12 @@ namespace Smiter
             this.CPU_Bar = new System.Windows.Forms.ToolStripProgressBar();
             this.TitleLabel = new System.Windows.Forms.Label();
             this.PauseBtn = new System.Windows.Forms.Button();
-            this.serviceController1 = new System.ServiceProcess.ServiceController();
             this.RR = new System.Windows.Forms.NumericUpDown();
             this.RRLabel = new System.Windows.Forms.Label();
             this.NotificationAreaIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.AboutBtn = new System.Windows.Forms.Button();
             this.SettingsGroupBox = new System.Windows.Forms.GroupBox();
+            this.ConfirmationCBox = new System.Windows.Forms.CheckBox();
             this.ForceClose = new System.Windows.Forms.CheckBox();
             this.LogBtn = new System.Windows.Forms.Button();
             this.radioBtnMilliseconds = new System.Windows.Forms.RadioButton();
@@ -52,6 +52,8 @@ namespace Smiter
             this.HnRCheckBox = new System.Windows.Forms.CheckBox();
             this.topSeparator = new System.Windows.Forms.Label();
             this.MinimizeBtn = new System.Windows.Forms.Button();
+            this.RefreshAfterTerminationCBox = new System.Windows.Forms.CheckBox();
+            this.LastTerminatedProcessLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.ProcessList)).BeginInit();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.RR)).BeginInit();
@@ -72,7 +74,7 @@ namespace Smiter
             this.ProcessList.MultiSelect = false;
             this.ProcessList.Name = "ProcessList";
             this.ProcessList.ReadOnly = true;
-            this.ProcessList.Size = new System.Drawing.Size(406, 356);
+            this.ProcessList.Size = new System.Drawing.Size(400, 425);
             this.ProcessList.TabIndex = 0;
             this.ProcessList.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.KillTask);
             // 
@@ -82,7 +84,7 @@ namespace Smiter
             this.CloseBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.CloseBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CloseBtn.Font = new System.Drawing.Font("Webdings", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
-            this.CloseBtn.Location = new System.Drawing.Point(768, -1);
+            this.CloseBtn.Location = new System.Drawing.Point(704, -1);
             this.CloseBtn.Name = "CloseBtn";
             this.CloseBtn.Size = new System.Drawing.Size(32, 32);
             this.CloseBtn.TabIndex = 1;
@@ -96,7 +98,7 @@ namespace Smiter
             // 
             this.RefreshBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.RefreshBtn.Font = new System.Drawing.Font("Webdings", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
-            this.RefreshBtn.Location = new System.Drawing.Point(646, -1);
+            this.RefreshBtn.Location = new System.Drawing.Point(582, -1);
             this.RefreshBtn.Name = "RefreshBtn";
             this.RefreshBtn.Size = new System.Drawing.Size(32, 32);
             this.RefreshBtn.TabIndex = 2;
@@ -109,9 +111,9 @@ namespace Smiter
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.StatusStrip,
             this.CPU_Bar});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 509);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 503);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(800, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(735, 22);
             this.statusStrip1.TabIndex = 3;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -139,7 +141,7 @@ namespace Smiter
             // 
             this.PauseBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.PauseBtn.Font = new System.Drawing.Font("Webdings", 12F);
-            this.PauseBtn.Location = new System.Drawing.Point(677, -1);
+            this.PauseBtn.Location = new System.Drawing.Point(613, -1);
             this.PauseBtn.Name = "PauseBtn";
             this.PauseBtn.Size = new System.Drawing.Size(32, 32);
             this.PauseBtn.TabIndex = 5;
@@ -149,14 +151,13 @@ namespace Smiter
             // 
             // RR
             // 
-            this.RR.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.RR.Cursor = System.Windows.Forms.Cursors.Default;
             this.RR.Increment = new decimal(new int[] {
             100,
             0,
             0,
             0});
-            this.RR.Location = new System.Drawing.Point(6, 62);
+            this.RR.Location = new System.Drawing.Point(5, 100);
             this.RR.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -168,7 +169,7 @@ namespace Smiter
             0,
             0});
             this.RR.Name = "RR";
-            this.RR.Size = new System.Drawing.Size(67, 18);
+            this.RR.Size = new System.Drawing.Size(64, 22);
             this.RR.TabIndex = 6;
             this.RR.Value = new decimal(new int[] {
             100,
@@ -181,7 +182,7 @@ namespace Smiter
             // RRLabel
             // 
             this.RRLabel.AutoSize = true;
-            this.RRLabel.Location = new System.Drawing.Point(79, 64);
+            this.RRLabel.Location = new System.Drawing.Point(72, 102);
             this.RRLabel.Name = "RRLabel";
             this.RRLabel.Size = new System.Drawing.Size(72, 13);
             this.RRLabel.TabIndex = 7;
@@ -197,7 +198,7 @@ namespace Smiter
             // 
             this.AboutBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.AboutBtn.Font = new System.Drawing.Font("Webdings", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
-            this.AboutBtn.Location = new System.Drawing.Point(707, -1);
+            this.AboutBtn.Location = new System.Drawing.Point(643, -1);
             this.AboutBtn.Name = "AboutBtn";
             this.AboutBtn.Size = new System.Drawing.Size(32, 32);
             this.AboutBtn.TabIndex = 8;
@@ -207,6 +208,8 @@ namespace Smiter
             // 
             // SettingsGroupBox
             // 
+            this.SettingsGroupBox.Controls.Add(this.RefreshAfterTerminationCBox);
+            this.SettingsGroupBox.Controls.Add(this.ConfirmationCBox);
             this.SettingsGroupBox.Controls.Add(this.ForceClose);
             this.SettingsGroupBox.Controls.Add(this.LogBtn);
             this.SettingsGroupBox.Controls.Add(this.radioBtnMilliseconds);
@@ -217,17 +220,30 @@ namespace Smiter
             this.SettingsGroupBox.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SettingsGroupBox.Location = new System.Drawing.Point(412, 68);
             this.SettingsGroupBox.Name = "SettingsGroupBox";
-            this.SettingsGroupBox.Size = new System.Drawing.Size(382, 127);
+            this.SettingsGroupBox.Size = new System.Drawing.Size(320, 164);
             this.SettingsGroupBox.TabIndex = 9;
             this.SettingsGroupBox.TabStop = false;
             this.SettingsGroupBox.Text = "Settings";
+            // 
+            // ConfirmationCBox
+            // 
+            this.ConfirmationCBox.AutoSize = true;
+            this.ConfirmationCBox.Checked = true;
+            this.ConfirmationCBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ConfirmationCBox.Location = new System.Drawing.Point(5, 60);
+            this.ConfirmationCBox.Name = "ConfirmationCBox";
+            this.ConfirmationCBox.Size = new System.Drawing.Size(117, 17);
+            this.ConfirmationCBox.TabIndex = 12;
+            this.ConfirmationCBox.Text = "Confirm Selection";
+            this.ConfirmationCBox.UseVisualStyleBackColor = true;
+            this.ConfirmationCBox.CheckedChanged += new System.EventHandler(this.ConfirmationCBox_CheckedChanged);
             // 
             // ForceClose
             // 
             this.ForceClose.AutoSize = true;
             this.ForceClose.Checked = true;
             this.ForceClose.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ForceClose.Location = new System.Drawing.Point(6, 39);
+            this.ForceClose.Location = new System.Drawing.Point(5, 40);
             this.ForceClose.Name = "ForceClose";
             this.ForceClose.Size = new System.Drawing.Size(117, 17);
             this.ForceClose.TabIndex = 11;
@@ -236,7 +252,7 @@ namespace Smiter
             // 
             // LogBtn
             // 
-            this.LogBtn.Location = new System.Drawing.Point(7, 98);
+            this.LogBtn.Location = new System.Drawing.Point(6, 135);
             this.LogBtn.Name = "LogBtn";
             this.LogBtn.Size = new System.Drawing.Size(75, 23);
             this.LogBtn.TabIndex = 10;
@@ -248,7 +264,7 @@ namespace Smiter
             // 
             this.radioBtnMilliseconds.AutoSize = true;
             this.radioBtnMilliseconds.Checked = true;
-            this.radioBtnMilliseconds.Location = new System.Drawing.Point(232, 62);
+            this.radioBtnMilliseconds.Location = new System.Drawing.Point(220, 100);
             this.radioBtnMilliseconds.Name = "radioBtnMilliseconds";
             this.radioBtnMilliseconds.Size = new System.Drawing.Size(89, 17);
             this.radioBtnMilliseconds.TabIndex = 9;
@@ -260,7 +276,7 @@ namespace Smiter
             // radioBtnSeconds
             // 
             this.radioBtnSeconds.AutoSize = true;
-            this.radioBtnSeconds.Location = new System.Drawing.Point(157, 62);
+            this.radioBtnSeconds.Location = new System.Drawing.Point(148, 100);
             this.radioBtnSeconds.Name = "radioBtnSeconds";
             this.radioBtnSeconds.Size = new System.Drawing.Size(68, 17);
             this.radioBtnSeconds.TabIndex = 8;
@@ -272,7 +288,7 @@ namespace Smiter
             // HnRCheckBox
             // 
             this.HnRCheckBox.AutoSize = true;
-            this.HnRCheckBox.Location = new System.Drawing.Point(6, 19);
+            this.HnRCheckBox.Location = new System.Drawing.Point(5, 20);
             this.HnRCheckBox.Name = "HnRCheckBox";
             this.HnRCheckBox.Size = new System.Drawing.Size(157, 17);
             this.HnRCheckBox.TabIndex = 0;
@@ -284,9 +300,9 @@ namespace Smiter
             this.topSeparator.BackColor = System.Drawing.SystemColors.ButtonShadow;
             this.topSeparator.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.topSeparator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.topSeparator.Location = new System.Drawing.Point(0, 50);
+            this.topSeparator.Location = new System.Drawing.Point(1, 50);
             this.topSeparator.Name = "topSeparator";
-            this.topSeparator.Size = new System.Drawing.Size(800, 2);
+            this.topSeparator.Size = new System.Drawing.Size(799, 2);
             this.topSeparator.TabIndex = 10;
             // 
             // MinimizeBtn
@@ -294,7 +310,7 @@ namespace Smiter
             this.MinimizeBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.MinimizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.MinimizeBtn.Font = new System.Drawing.Font("Webdings", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
-            this.MinimizeBtn.Location = new System.Drawing.Point(738, -1);
+            this.MinimizeBtn.Location = new System.Drawing.Point(674, -1);
             this.MinimizeBtn.Name = "MinimizeBtn";
             this.MinimizeBtn.Size = new System.Drawing.Size(32, 32);
             this.MinimizeBtn.TabIndex = 11;
@@ -302,12 +318,33 @@ namespace Smiter
             this.MinimizeBtn.UseVisualStyleBackColor = true;
             this.MinimizeBtn.Click += new System.EventHandler(this.MinimizeBtn_Click);
             // 
+            // RefreshAfterTerminationCBox
+            // 
+            this.RefreshAfterTerminationCBox.AutoSize = true;
+            this.RefreshAfterTerminationCBox.Checked = true;
+            this.RefreshAfterTerminationCBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.RefreshAfterTerminationCBox.Location = new System.Drawing.Point(5, 80);
+            this.RefreshAfterTerminationCBox.Name = "RefreshAfterTerminationCBox";
+            this.RefreshAfterTerminationCBox.Size = new System.Drawing.Size(156, 17);
+            this.RefreshAfterTerminationCBox.TabIndex = 13;
+            this.RefreshAfterTerminationCBox.Text = "Refresh After Termination";
+            this.RefreshAfterTerminationCBox.UseVisualStyleBackColor = true;
+            // 
+            // LastTerminatedProcessLabel
+            // 
+            this.LastTerminatedProcessLabel.AutoSize = true;
+            this.LastTerminatedProcessLabel.Location = new System.Drawing.Point(105, 514);
+            this.LastTerminatedProcessLabel.Name = "LastTerminatedProcessLabel";
+            this.LastTerminatedProcessLabel.Size = new System.Drawing.Size(0, 13);
+            this.LastTerminatedProcessLabel.TabIndex = 12;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 531);
+            this.ClientSize = new System.Drawing.Size(735, 525);
             this.ControlBox = false;
+            this.Controls.Add(this.LastTerminatedProcessLabel);
             this.Controls.Add(this.MinimizeBtn);
             this.Controls.Add(this.topSeparator);
             this.Controls.Add(this.SettingsGroupBox);
@@ -320,9 +357,9 @@ namespace Smiter
             this.Controls.Add(this.ProcessList);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "MainForm";
-            this.Opacity = 0.8D;
             this.Text = "Smiter";
             this.Load += new System.EventHandler(this.MainForm_Load);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MainForm_MouseDown);
             ((System.ComponentModel.ISupportInitialize)(this.ProcessList)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
@@ -344,7 +381,6 @@ namespace Smiter
         private System.Windows.Forms.Label TitleLabel;
         private System.Windows.Forms.ToolStripProgressBar CPU_Bar;
         private System.Windows.Forms.Button PauseBtn;
-        private System.ServiceProcess.ServiceController serviceController1;
         private System.Windows.Forms.NumericUpDown RR;
         private System.Windows.Forms.Label RRLabel;
         private System.Windows.Forms.NotifyIcon NotificationAreaIcon;
@@ -357,6 +393,9 @@ namespace Smiter
         private System.Windows.Forms.Button LogBtn;
         private System.Windows.Forms.CheckBox ForceClose;
         private System.Windows.Forms.Button MinimizeBtn;
+        private System.Windows.Forms.CheckBox ConfirmationCBox;
+        private System.Windows.Forms.CheckBox RefreshAfterTerminationCBox;
+        private System.Windows.Forms.Label LastTerminatedProcessLabel;
     }
 }
 
