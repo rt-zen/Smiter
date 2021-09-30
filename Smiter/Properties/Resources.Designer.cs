@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace TaskKiller.Properties {
+namespace Smiter.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace TaskKiller.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("TaskKiller.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Smiter.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -66,26 +66,6 @@ namespace TaskKiller.Properties {
         internal static System.Drawing.Bitmap logo3256 {
             get {
                 object obj = ResourceManager.GetObject("logo3256", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap logo3384 {
-            get {
-                object obj = ResourceManager.GetObject("logo3384", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap logo3512 {
-            get {
-                object obj = ResourceManager.GetObject("logo3512", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

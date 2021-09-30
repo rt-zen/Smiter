@@ -1,5 +1,5 @@
 ﻿
-namespace TaskKiller
+namespace Smiter
 {
     partial class MainForm
     {
@@ -45,10 +45,13 @@ namespace TaskKiller
             this.NotificationAreaIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.AboutBtn = new System.Windows.Forms.Button();
             this.SettingsGroupBox = new System.Windows.Forms.GroupBox();
+            this.ForceClose = new System.Windows.Forms.CheckBox();
+            this.LogBtn = new System.Windows.Forms.Button();
             this.radioBtnMilliseconds = new System.Windows.Forms.RadioButton();
             this.radioBtnSeconds = new System.Windows.Forms.RadioButton();
             this.HnRCheckBox = new System.Windows.Forms.CheckBox();
             this.topSeparator = new System.Windows.Forms.Label();
+            this.MinimizeBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.ProcessList)).BeginInit();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.RR)).BeginInit();
@@ -57,9 +60,18 @@ namespace TaskKiller
             // 
             // ProcessList
             // 
+            this.ProcessList.AllowUserToAddRows = false;
+            this.ProcessList.AllowUserToDeleteRows = false;
+            this.ProcessList.AllowUserToOrderColumns = true;
+            this.ProcessList.AllowUserToResizeColumns = false;
+            this.ProcessList.AllowUserToResizeRows = false;
+            this.ProcessList.BackgroundColor = System.Drawing.SystemColors.Control;
+            this.ProcessList.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.ProcessList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.ProcessList.Location = new System.Drawing.Point(0, 68);
+            this.ProcessList.MultiSelect = false;
             this.ProcessList.Name = "ProcessList";
+            this.ProcessList.ReadOnly = true;
             this.ProcessList.Size = new System.Drawing.Size(406, 356);
             this.ProcessList.TabIndex = 0;
             this.ProcessList.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.KillTask);
@@ -70,19 +82,21 @@ namespace TaskKiller
             this.CloseBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.CloseBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CloseBtn.Font = new System.Drawing.Font("Webdings", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
-            this.CloseBtn.Location = new System.Drawing.Point(768, 0);
+            this.CloseBtn.Location = new System.Drawing.Point(768, -1);
             this.CloseBtn.Name = "CloseBtn";
             this.CloseBtn.Size = new System.Drawing.Size(32, 32);
             this.CloseBtn.TabIndex = 1;
             this.CloseBtn.Text = "r";
-            this.CloseBtn.UseVisualStyleBackColor = false;
+            this.CloseBtn.UseVisualStyleBackColor = true;
             this.CloseBtn.Click += new System.EventHandler(this.CloseBtn_Click);
+            this.CloseBtn.MouseEnter += new System.EventHandler(this.CloseBtnHoverIn);
+            this.CloseBtn.MouseLeave += new System.EventHandler(this.CloseBtnHoverOut);
             // 
             // RefreshBtn
             // 
             this.RefreshBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.RefreshBtn.Font = new System.Drawing.Font("Webdings", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
-            this.RefreshBtn.Location = new System.Drawing.Point(738, 0);
+            this.RefreshBtn.Location = new System.Drawing.Point(646, -1);
             this.RefreshBtn.Name = "RefreshBtn";
             this.RefreshBtn.Size = new System.Drawing.Size(32, 32);
             this.RefreshBtn.TabIndex = 2;
@@ -125,7 +139,7 @@ namespace TaskKiller
             // 
             this.PauseBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.PauseBtn.Font = new System.Drawing.Font("Webdings", 12F);
-            this.PauseBtn.Location = new System.Drawing.Point(707, 0);
+            this.PauseBtn.Location = new System.Drawing.Point(677, -1);
             this.PauseBtn.Name = "PauseBtn";
             this.PauseBtn.Size = new System.Drawing.Size(32, 32);
             this.PauseBtn.TabIndex = 5;
@@ -142,7 +156,7 @@ namespace TaskKiller
             0,
             0,
             0});
-            this.RR.Location = new System.Drawing.Point(6, 42);
+            this.RR.Location = new System.Drawing.Point(6, 62);
             this.RR.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -167,7 +181,7 @@ namespace TaskKiller
             // RRLabel
             // 
             this.RRLabel.AutoSize = true;
-            this.RRLabel.Location = new System.Drawing.Point(79, 44);
+            this.RRLabel.Location = new System.Drawing.Point(79, 64);
             this.RRLabel.Name = "RRLabel";
             this.RRLabel.Size = new System.Drawing.Size(72, 13);
             this.RRLabel.TabIndex = 7;
@@ -183,7 +197,7 @@ namespace TaskKiller
             // 
             this.AboutBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.AboutBtn.Font = new System.Drawing.Font("Webdings", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
-            this.AboutBtn.Location = new System.Drawing.Point(676, 0);
+            this.AboutBtn.Location = new System.Drawing.Point(707, -1);
             this.AboutBtn.Name = "AboutBtn";
             this.AboutBtn.Size = new System.Drawing.Size(32, 32);
             this.AboutBtn.TabIndex = 8;
@@ -193,6 +207,8 @@ namespace TaskKiller
             // 
             // SettingsGroupBox
             // 
+            this.SettingsGroupBox.Controls.Add(this.ForceClose);
+            this.SettingsGroupBox.Controls.Add(this.LogBtn);
             this.SettingsGroupBox.Controls.Add(this.radioBtnMilliseconds);
             this.SettingsGroupBox.Controls.Add(this.radioBtnSeconds);
             this.SettingsGroupBox.Controls.Add(this.HnRCheckBox);
@@ -206,11 +222,33 @@ namespace TaskKiller
             this.SettingsGroupBox.TabStop = false;
             this.SettingsGroupBox.Text = "Settings";
             // 
+            // ForceClose
+            // 
+            this.ForceClose.AutoSize = true;
+            this.ForceClose.Checked = true;
+            this.ForceClose.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ForceClose.Location = new System.Drawing.Point(6, 39);
+            this.ForceClose.Name = "ForceClose";
+            this.ForceClose.Size = new System.Drawing.Size(117, 17);
+            this.ForceClose.TabIndex = 11;
+            this.ForceClose.Text = "Force Termination";
+            this.ForceClose.UseVisualStyleBackColor = true;
+            // 
+            // LogBtn
+            // 
+            this.LogBtn.Location = new System.Drawing.Point(7, 98);
+            this.LogBtn.Name = "LogBtn";
+            this.LogBtn.Size = new System.Drawing.Size(75, 23);
+            this.LogBtn.TabIndex = 10;
+            this.LogBtn.Text = "Log";
+            this.LogBtn.UseVisualStyleBackColor = true;
+            this.LogBtn.Click += new System.EventHandler(this.LogBtn_Click);
+            // 
             // radioBtnMilliseconds
             // 
             this.radioBtnMilliseconds.AutoSize = true;
             this.radioBtnMilliseconds.Checked = true;
-            this.radioBtnMilliseconds.Location = new System.Drawing.Point(232, 42);
+            this.radioBtnMilliseconds.Location = new System.Drawing.Point(232, 62);
             this.radioBtnMilliseconds.Name = "radioBtnMilliseconds";
             this.radioBtnMilliseconds.Size = new System.Drawing.Size(89, 17);
             this.radioBtnMilliseconds.TabIndex = 9;
@@ -222,7 +260,7 @@ namespace TaskKiller
             // radioBtnSeconds
             // 
             this.radioBtnSeconds.AutoSize = true;
-            this.radioBtnSeconds.Location = new System.Drawing.Point(157, 42);
+            this.radioBtnSeconds.Location = new System.Drawing.Point(157, 62);
             this.radioBtnSeconds.Name = "radioBtnSeconds";
             this.radioBtnSeconds.Size = new System.Drawing.Size(68, 17);
             this.radioBtnSeconds.TabIndex = 8;
@@ -240,7 +278,6 @@ namespace TaskKiller
             this.HnRCheckBox.TabIndex = 0;
             this.HnRCheckBox.Text = "Hit and Run/Win9x Mode";
             this.HnRCheckBox.UseVisualStyleBackColor = true;
-            this.HnRCheckBox.CheckedChanged += new System.EventHandler(this.HnRCheckBoxChanged);
             // 
             // topSeparator
             // 
@@ -252,12 +289,26 @@ namespace TaskKiller
             this.topSeparator.Size = new System.Drawing.Size(800, 2);
             this.topSeparator.TabIndex = 10;
             // 
+            // MinimizeBtn
+            // 
+            this.MinimizeBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.MinimizeBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.MinimizeBtn.Font = new System.Drawing.Font("Webdings", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
+            this.MinimizeBtn.Location = new System.Drawing.Point(738, -1);
+            this.MinimizeBtn.Name = "MinimizeBtn";
+            this.MinimizeBtn.Size = new System.Drawing.Size(32, 32);
+            this.MinimizeBtn.TabIndex = 11;
+            this.MinimizeBtn.Text = "0";
+            this.MinimizeBtn.UseVisualStyleBackColor = true;
+            this.MinimizeBtn.Click += new System.EventHandler(this.MinimizeBtn_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 531);
             this.ControlBox = false;
+            this.Controls.Add(this.MinimizeBtn);
             this.Controls.Add(this.topSeparator);
             this.Controls.Add(this.SettingsGroupBox);
             this.Controls.Add(this.AboutBtn);
@@ -270,7 +321,7 @@ namespace TaskKiller
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "MainForm";
             this.Opacity = 0.8D;
-            this.Text = "TaskKiller";
+            this.Text = "Smiter";
             this.Load += new System.EventHandler(this.MainForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.ProcessList)).EndInit();
             this.statusStrip1.ResumeLayout(false);
@@ -303,6 +354,9 @@ namespace TaskKiller
         private System.Windows.Forms.Label topSeparator;
         private System.Windows.Forms.RadioButton radioBtnMilliseconds;
         private System.Windows.Forms.RadioButton radioBtnSeconds;
+        private System.Windows.Forms.Button LogBtn;
+        private System.Windows.Forms.CheckBox ForceClose;
+        private System.Windows.Forms.Button MinimizeBtn;
     }
 }
 

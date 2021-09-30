@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace TaskKiller
+namespace Smiter
 {
     public partial class AboutForm : Form
     {
@@ -30,6 +30,16 @@ namespace TaskKiller
         private void OpenGitPage(object sender, EventArgs e)
         {
             System.Diagnostics.Process.Start("https://github.com/rt-zen");
+        }
+
+        private void AboutLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void topSeparator_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿
-namespace TaskKiller
+namespace Smiter
 {
     partial class AboutForm
     {
@@ -29,23 +29,24 @@ namespace TaskKiller
         /// </summary>
         private void InitializeComponent()
         {
-            this.button1 = new System.Windows.Forms.Button();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AboutForm));
+            this.CloseBtn = new System.Windows.Forms.Button();
             this.AboutLabel = new System.Windows.Forms.Label();
             this.topSeparator = new System.Windows.Forms.Label();
             this.BottomSeparator = new System.Windows.Forms.Label();
             this.gitLink = new System.Windows.Forms.LinkLabel();
             this.SuspendLayout();
             // 
-            // button1
+            // CloseBtn
             // 
-            this.button1.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.button1.Location = new System.Drawing.Point(276, 364);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(48, 24);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Close";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.CloseForm);
+            this.CloseBtn.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.CloseBtn.Location = new System.Drawing.Point(276, 364);
+            this.CloseBtn.Name = "CloseBtn";
+            this.CloseBtn.Size = new System.Drawing.Size(48, 24);
+            this.CloseBtn.TabIndex = 0;
+            this.CloseBtn.Text = "Close";
+            this.CloseBtn.UseVisualStyleBackColor = true;
+            this.CloseBtn.Click += new System.EventHandler(this.CloseForm);
             // 
             // AboutLabel
             // 
@@ -57,16 +58,18 @@ namespace TaskKiller
             this.AboutLabel.Size = new System.Drawing.Size(96, 40);
             this.AboutLabel.TabIndex = 1;
             this.AboutLabel.Text = "About";
+            this.AboutLabel.Click += new System.EventHandler(this.AboutLabel_Click);
             // 
             // topSeparator
             // 
             this.topSeparator.BackColor = System.Drawing.SystemColors.ButtonShadow;
             this.topSeparator.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.topSeparator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.topSeparator.Location = new System.Drawing.Point(0, 50);
+            this.topSeparator.Location = new System.Drawing.Point(1, 50);
             this.topSeparator.Name = "topSeparator";
-            this.topSeparator.Size = new System.Drawing.Size(602, 2);
+            this.topSeparator.Size = new System.Drawing.Size(598, 2);
             this.topSeparator.TabIndex = 2;
+            this.topSeparator.Click += new System.EventHandler(this.topSeparator_Click);
             // 
             // BottomSeparator
             // 
@@ -75,13 +78,13 @@ namespace TaskKiller
             this.BottomSeparator.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.BottomSeparator.Location = new System.Drawing.Point(1, 348);
             this.BottomSeparator.Name = "BottomSeparator";
-            this.BottomSeparator.Size = new System.Drawing.Size(602, 2);
+            this.BottomSeparator.Size = new System.Drawing.Size(598, 2);
             this.BottomSeparator.TabIndex = 3;
             // 
             // gitLink
             // 
             this.gitLink.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.gitLink.Image = global::TaskKiller.Properties.Resources.logo3256;
+            this.gitLink.Image = ((System.Drawing.Image)(resources.GetObject("gitLink.Image")));
             this.gitLink.LinkColor = System.Drawing.Color.Transparent;
             this.gitLink.Location = new System.Drawing.Point(10, 71);
             this.gitLink.Name = "gitLink";
@@ -99,7 +102,7 @@ namespace TaskKiller
             this.Controls.Add(this.gitLink);
             this.Controls.Add(this.BottomSeparator);
             this.Controls.Add(this.AboutLabel);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.CloseBtn);
             this.Controls.Add(this.topSeparator);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "AboutForm";
@@ -112,7 +115,7 @@ namespace TaskKiller
 
         #endregion
 
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button CloseBtn;
         private System.Windows.Forms.Label AboutLabel;
         private System.Windows.Forms.Label topSeparator;
         private System.Windows.Forms.Label BottomSeparator;
