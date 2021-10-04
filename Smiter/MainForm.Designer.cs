@@ -44,6 +44,7 @@ namespace Smiter
             this.NotificationAreaIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.AboutBtn = new System.Windows.Forms.Button();
             this.SettingsGroupBox = new System.Windows.Forms.GroupBox();
+            this.RefreshAfterTerminationCBox = new System.Windows.Forms.CheckBox();
             this.ConfirmationCBox = new System.Windows.Forms.CheckBox();
             this.ForceClose = new System.Windows.Forms.CheckBox();
             this.LogBtn = new System.Windows.Forms.Button();
@@ -52,8 +53,8 @@ namespace Smiter
             this.HnRCheckBox = new System.Windows.Forms.CheckBox();
             this.topSeparator = new System.Windows.Forms.Label();
             this.MinimizeBtn = new System.Windows.Forms.Button();
-            this.RefreshAfterTerminationCBox = new System.Windows.Forms.CheckBox();
             this.LastTerminatedProcessLabel = new System.Windows.Forms.Label();
+            this.SearchBox = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.ProcessList)).BeginInit();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.RR)).BeginInit();
@@ -70,12 +71,13 @@ namespace Smiter
             this.ProcessList.BackgroundColor = System.Drawing.SystemColors.Control;
             this.ProcessList.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.ProcessList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.ProcessList.Location = new System.Drawing.Point(0, 68);
+            this.ProcessList.Location = new System.Drawing.Point(0, 100);
             this.ProcessList.MultiSelect = false;
             this.ProcessList.Name = "ProcessList";
             this.ProcessList.ReadOnly = true;
             this.ProcessList.Size = new System.Drawing.Size(400, 425);
             this.ProcessList.TabIndex = 0;
+            this.ProcessList.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ProcessList_CellClick);
             this.ProcessList.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.KillTask);
             // 
             // CloseBtn
@@ -111,7 +113,7 @@ namespace Smiter
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.StatusStrip,
             this.CPU_Bar});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 503);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 528);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(735, 22);
             this.statusStrip1.TabIndex = 3;
@@ -225,6 +227,18 @@ namespace Smiter
             this.SettingsGroupBox.TabStop = false;
             this.SettingsGroupBox.Text = "Settings";
             // 
+            // RefreshAfterTerminationCBox
+            // 
+            this.RefreshAfterTerminationCBox.AutoSize = true;
+            this.RefreshAfterTerminationCBox.Checked = true;
+            this.RefreshAfterTerminationCBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.RefreshAfterTerminationCBox.Location = new System.Drawing.Point(5, 80);
+            this.RefreshAfterTerminationCBox.Name = "RefreshAfterTerminationCBox";
+            this.RefreshAfterTerminationCBox.Size = new System.Drawing.Size(156, 17);
+            this.RefreshAfterTerminationCBox.TabIndex = 13;
+            this.RefreshAfterTerminationCBox.Text = "Refresh After Termination";
+            this.RefreshAfterTerminationCBox.UseVisualStyleBackColor = true;
+            // 
             // ConfirmationCBox
             // 
             this.ConfirmationCBox.AutoSize = true;
@@ -318,32 +332,30 @@ namespace Smiter
             this.MinimizeBtn.UseVisualStyleBackColor = true;
             this.MinimizeBtn.Click += new System.EventHandler(this.MinimizeBtn_Click);
             // 
-            // RefreshAfterTerminationCBox
-            // 
-            this.RefreshAfterTerminationCBox.AutoSize = true;
-            this.RefreshAfterTerminationCBox.Checked = true;
-            this.RefreshAfterTerminationCBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.RefreshAfterTerminationCBox.Location = new System.Drawing.Point(5, 80);
-            this.RefreshAfterTerminationCBox.Name = "RefreshAfterTerminationCBox";
-            this.RefreshAfterTerminationCBox.Size = new System.Drawing.Size(156, 17);
-            this.RefreshAfterTerminationCBox.TabIndex = 13;
-            this.RefreshAfterTerminationCBox.Text = "Refresh After Termination";
-            this.RefreshAfterTerminationCBox.UseVisualStyleBackColor = true;
-            // 
             // LastTerminatedProcessLabel
             // 
             this.LastTerminatedProcessLabel.AutoSize = true;
-            this.LastTerminatedProcessLabel.Location = new System.Drawing.Point(105, 514);
+            this.LastTerminatedProcessLabel.Location = new System.Drawing.Point(106, 533);
             this.LastTerminatedProcessLabel.Name = "LastTerminatedProcessLabel";
-            this.LastTerminatedProcessLabel.Size = new System.Drawing.Size(0, 13);
+            this.LastTerminatedProcessLabel.Size = new System.Drawing.Size(24, 13);
             this.LastTerminatedProcessLabel.TabIndex = 12;
+            this.LastTerminatedProcessLabel.Text = "test";
+            // 
+            // SearchBox
+            // 
+            this.SearchBox.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.SearchBox.Location = new System.Drawing.Point(32, 68);
+            this.SearchBox.Name = "SearchBox";
+            this.SearchBox.Size = new System.Drawing.Size(144, 20);
+            this.SearchBox.TabIndex = 13;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(735, 525);
+            this.ClientSize = new System.Drawing.Size(735, 550);
             this.ControlBox = false;
+            this.Controls.Add(this.SearchBox);
             this.Controls.Add(this.LastTerminatedProcessLabel);
             this.Controls.Add(this.MinimizeBtn);
             this.Controls.Add(this.topSeparator);
@@ -396,6 +408,7 @@ namespace Smiter
         private System.Windows.Forms.CheckBox ConfirmationCBox;
         private System.Windows.Forms.CheckBox RefreshAfterTerminationCBox;
         private System.Windows.Forms.Label LastTerminatedProcessLabel;
+        private System.Windows.Forms.TextBox SearchBox;
     }
 }
 

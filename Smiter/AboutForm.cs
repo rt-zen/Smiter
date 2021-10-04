@@ -34,7 +34,7 @@ namespace Smiter
         #endregion
 
 
-        ToolTip ToolTipExport = new ToolTip();
+        
         public AboutForm()
         {
             InitializeComponent();
@@ -42,8 +42,7 @@ namespace Smiter
 
         private void AboutForm_Load(object sender, EventArgs e)
         {
-            ToolTipExport.SetToolTip(ExportBtn, "Export to file");
-            ToolTipExport.ShowAlways = true;
+            
         }
 
         private void CloseForm(object sender, EventArgs e)
@@ -61,9 +60,4 @@ namespace Smiter
 
         }
 
-        private void ExportBtn_Click(object sender, EventArgs e)
-        {
-            //TODO: Export all Log Text to File
-        }
-    }
 }

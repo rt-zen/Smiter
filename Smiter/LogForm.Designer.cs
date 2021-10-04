@@ -34,6 +34,7 @@ namespace Smiter
             this.label1 = new System.Windows.Forms.Label();
             this.CloseBtn = new System.Windows.Forms.Button();
             this.LogListBox = new System.Windows.Forms.ListBox();
+            this.ExportBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // AboutLabel
@@ -87,12 +88,26 @@ namespace Smiter
             this.LogListBox.Size = new System.Drawing.Size(598, 273);
             this.LogListBox.TabIndex = 6;
             // 
+            // ExportBtn
+            // 
+            this.ExportBtn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.ExportBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ExportBtn.Font = new System.Drawing.Font("Webdings", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
+            this.ExportBtn.Location = new System.Drawing.Point(569, -1);
+            this.ExportBtn.Name = "ExportBtn";
+            this.ExportBtn.Size = new System.Drawing.Size(32, 32);
+            this.ExportBtn.TabIndex = 7;
+            this.ExportBtn.Text = "";
+            this.ExportBtn.UseVisualStyleBackColor = true;
+            this.ExportBtn.Click += new System.EventHandler(this.ExportBtn_Click);
+            // 
             // LogForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(600, 400);
+            this.Controls.Add(this.ExportBtn);
             this.Controls.Add(this.LogListBox);
             this.Controls.Add(this.CloseBtn);
             this.Controls.Add(this.label1);
@@ -115,5 +130,6 @@ namespace Smiter
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button CloseBtn;
         private System.Windows.Forms.ListBox LogListBox;
+        private System.Windows.Forms.Button ExportBtn;
     }
 }

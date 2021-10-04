@@ -8,11 +8,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Smiter.Classes;
+using System.IO;
 
 namespace Smiter
 {
     public partial class LogForm : Form
     {
+        List<string> LogLines = new List<string>();
+        ToolTip ToolTipExport = new ToolTip();
+
         #region Circumvent Form not being draggeable because of no borders
         //src https://stackoverflow.com/questions/1592876/make-a-borderless-form-movable
         public const int WM_NCLBUTTONDOWN = 0xA1;
@@ -35,26 +39,20 @@ namespace Smiter
         #endregion
 
 
-        MainForm parent;
+
         List<LogEvent> LogList;
-        public LogForm(MainForm parent, List<LogEvent> Log)
+        public LogForm(List<LogEvent> Log)
         {
             InitializeComponent();
-            this.parent = parent;
             this.LogList = Log;
         }
 
-
+        
         private void ListBoxGraphicsHandler(object sender, DrawItemEventArgs e)
         {
             //src: https://stackoverflow.com/questions/29173517/winforms-simplest-way-to-change-listbox-text-color-on-the-fly
+            
 
-            //bool isItemSelected = ((e.State & DrawItemState.Selected) == DrawItemState.Selected);
-            //Color foreColor;
-            //if (!)
-            //{
-
-            //}
 
             
             Graphics g = e.Graphics;
@@ -79,13 +77,33 @@ namespace Smiter
             LogListBox.DrawItem += new DrawItemEventHandler(ListBoxGraphicsHandler);
             foreach (LogEvent @event in LogList)
             {
-                LogListBox.Items.Add(@event.ToString());
+                string eventString = @event.ToString();
+                LogListBox.Items.Add(eventString);
+                LogLines.Add(eventString);
             }
+            ToolTipExport.SetToolTip(ExportBtn, "Export to file");
+            ToolTipExport.ShowAlways = true;
         }
 
         private void CloseBtn_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void ExportBtn_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog ExportDialog = new SaveFileDialog();
+            ExportDialog.Filter = "Simple Text file (*.txt)|*.txt|All Files (*.*)|*.*";
+            ExportDialog.RestoreDirectory = true;
+            ExportDialog.FileName = "Log.txt";
+            ExportDialog.DefaultExt = "txt";
+            ExportDialog.Title = "Save Log file As";
+            ExportDialog.InitialDirectory = @"%HOMEPATH%\Documents";
+
+            if (ExportDialog.ShowDialog() == DialogResult.OK)
+            {
+                File.WriteAllLines(ExportDialog.FileName, LogLines);
+            }
         }
     }
 }

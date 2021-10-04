@@ -25,24 +25,34 @@ namespace Smiter
         [System.Runtime.InteropServices.DllImport("user32.dll")]
         public static extern bool ReleaseCapture();
 
-        private void MainForm_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+        private void MainForm_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+            try
             {
-                ReleaseCapture();
-                SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+                if (e.Button == MouseButtons.Left)
+                {
+                    ReleaseCapture();
+                    SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+                }
             }
+            catch (Exception ex)
+            {
+
+                ExceptionHandler(ex, true, 1);
+            }
+
         }
         #endregion
 
 
-
         //Lists for Log events, and methods to add events to the list
         public List<LogEvent> Log = new List<LogEvent>();
+
         private void InsertToLog(string Event, int EventType, int EventClass)
         {
             Log.Add(new LogEvent(EventType, Event, EventClass));
         }
+
         #region Global Variables
         //Object to get CPU Usage
         private PerformanceCounter cpuMetric = new PerformanceCounter("Processor", "% Processor Time", "_Total");
@@ -53,6 +63,9 @@ namespace Smiter
         //Multiplier for selecting between seconds or milliseconds for the timer
         private int multiplier = 1;
 
+        //Tuple with currently selected cell coordinates
+        DataGridViewSelectedCellCollection SelectedCells;
+        (int, int) SelectedCellCoordentates = (0, 0);
 
         //Objects for calling taskkill
         private Process CMDProcess = new Process();
@@ -63,7 +76,7 @@ namespace Smiter
             InitializeComponent();
         }
 
-        private void ExceptionHandling(Exception ex, bool ThrowErrorMessage, int EventClass)
+        private void ExceptionHandler(Exception ex, bool ThrowErrorMessage, int EventClass)
         {
             InsertToLog(string.Format("Exception thrown with error: {0}", ex.Message), 3, EventClass);
             if (ThrowErrorMessage)
@@ -78,7 +91,7 @@ namespace Smiter
             //Get current CPU Usage
             float CPU_Value = cpuMetric.NextValue();
             //Setting default timer Interval and putting number updown on the default position
-            timer.Interval = 500;
+            timer.Interval = 500 * multiplier;
             RR.Value = 500;
             InsertToLog("Timer Interval Set.", 0, 0);
             //Assigning a method for each timer tick
@@ -86,6 +99,10 @@ namespace Smiter
             //Starting the timer
             timer.Start();
             InsertToLog("Timer Setup and Started.", 0, 0);
+
+            CPU_Bar.Style = ProgressBarStyle.Continuous;
+            InsertToLog("CPU bar style set.", 0, 0);
+
             //Hiding the command prompt execution and setting the executable for the command prompt
             string Executable = "cmd.exe";
             startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
@@ -107,12 +124,16 @@ namespace Smiter
                 List<ProcessSum> ProcessList = new List<ProcessSum>();
                 foreach (Process process in processCollection)
                 {
-                    ProcessList.Add(new ProcessSum(process.Id, process.ProcessName, string.Empty));
+                    if (process.ProcessName.Contains(SearchBox.Text) || process.Id.ToString().Contains(SearchBox.Text) || string.IsNullOrEmpty(SearchBox.Text))
+                    {
+                        ProcessList.Add(new ProcessSum(process.Id, process.ProcessName, /*process.Responding ? "Normal" : "Not Responding"*/string.Empty));
+                    }
                 }
                 return ProcessList;
             }
 
         }
+
 
         private void Exit()
         {
@@ -125,8 +146,19 @@ namespace Smiter
 
         private void refreshMetrics(object sender, EventArgs e)
         {
+            List<ProcessSum> CurrentProcessList = ProcessNames;
+            if (CurrentProcessList.Count == 0)
+            {
+                return;
+            }
             try
             {
+
+
+                if (sender.GetType() == typeof(object))
+                {
+                    InsertToLog("Refresh issued after process termination.", 0, 1);
+                }
                 if (sender.GetType() == typeof(Button))
                 {
                     Button RefreshButton = (Button)sender;
@@ -135,7 +167,27 @@ namespace Smiter
                         InsertToLog("Manual Refresh Issued.", 0, 1);
                     }
                 }
-                ProcessList.DataSource = ProcessNames;
+
+                #region DataGridView DataSource refresh
+                //src https://stackoverflow.com/questions/2442419/how-to-save-position-after-reload-datagridview
+                if (sender.GetType() != typeof(object))
+                {
+                    int CurrentDGVRow = 0;
+                    SelectedCells = ProcessList.SelectedCells;
+                    if (SelectedCells.Count > 0) SelectedCellCoordentates = (SelectedCells[0].RowIndex, SelectedCells[0].ColumnIndex);
+
+                    if (ProcessList.Rows.Count > 0 && ProcessList.FirstDisplayedCell != null) CurrentDGVRow = ProcessList.FirstDisplayedCell.RowIndex;
+
+                    ProcessList.DataSource = ProcessNames;
+
+                    if (CurrentDGVRow != 0 && CurrentDGVRow < ProcessList.Rows.Count) ProcessList.FirstDisplayedScrollingRowIndex = CurrentDGVRow;
+
+                    ProcessList.CurrentCell = ProcessList.Rows[SelectedCellCoordentates.Item1].Cells[SelectedCellCoordentates.Item2];
+
+                }
+                else ProcessList.DataSource = ProcessNames;
+                #endregion
+
                 float CPU_Value = cpuMetric.NextValue();
 
                 //From 0% to 50% the bar will be yellow, from 50% to 75% will be yellow, from 75% to 100% will be red 
@@ -159,13 +211,12 @@ namespace Smiter
                 }
 
                 //Assigning the Bar Style and percentage filled
-                CPU_Bar.Style = ProgressBarStyle.Continuous;
                 CPU_Bar.Value = (int)CPU_Value;
             }
             catch (Exception ex)
             {
-                ExceptionHandling(ex, true, 1);
                 StopTimer();
+                ExceptionHandler(ex, true, 1);
             }
 
 
@@ -187,7 +238,6 @@ namespace Smiter
             InsertToLog("Timer Paused.", 1, 1);
         }
         #endregion
-
 
 
 
@@ -264,7 +314,7 @@ namespace Smiter
             }
             catch (Exception ex)
             {
-                ExceptionHandling(ex, true, 3);
+                ExceptionHandler(ex, true, 3);
             }
             //If enabled, will execute refreshMetrics() method, refreshing the processlist and other metrics
             if (RefreshAfterTerminationCBox.Checked) refreshMetrics(new object(), e);
@@ -294,7 +344,7 @@ namespace Smiter
 
         private void CloseBtnHoverIn(object sender, EventArgs e)
         {
-            CloseBtn.BackColor = Color.DarkGray;
+            CloseBtn.BackColor = SystemColors.Control;
             CloseBtn.ForeColor = Color.Red;
         }
         private void CloseBtnHoverOut(object sender, EventArgs e)
@@ -305,7 +355,7 @@ namespace Smiter
 
         private void LogBtn_Click(object sender, EventArgs e)
         {
-            LogForm logForm = new LogForm(this, Log);
+            LogForm logForm = new LogForm(Log);
             logForm.Show();
         }
 
@@ -340,5 +390,10 @@ namespace Smiter
             this.Exit();
         }
         #endregion
+
+        private void ProcessList_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+        }
+        //TODO: Try methods update() and refresh() in the datagridview to test for more efficiency
     }
 }
