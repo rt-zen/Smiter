@@ -1541,4 +1541,10 @@
         uwvVbu/BmO6DrtgP5IE8kAfyPyiM/R+/5aceZWfIPQAAAABJRU5ErkJggg==
 </value>
   </data>
+  <data name="AboutText.Text" xml:space="preserve">
+    <value>This project is inspired on the Windows 98 Task Manager, and was made as a fun project. It is fully functional and works using the taskkill program.
+
+To terminate a process, simply double click the PID of the process or, if you wish to clear all processes with said name, just double click the name.
+</value>
+  </data>
 </root>

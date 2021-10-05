@@ -34,7 +34,7 @@ namespace Smiter
         #endregion
 
 
-        
+
         public AboutForm()
         {
             InitializeComponent();
@@ -42,7 +42,7 @@ namespace Smiter
 
         private void AboutForm_Load(object sender, EventArgs e)
         {
-            
+
         }
 
         private void CloseForm(object sender, EventArgs e)
@@ -59,5 +59,5 @@ namespace Smiter
         {
 
         }
-
+    }
 }

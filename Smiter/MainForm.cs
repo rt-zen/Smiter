@@ -195,19 +195,13 @@ namespace Smiter
                 {
                     CPU_Bar.ForeColor = Color.Green;
                 }
-                else
+                else if (CPU_Value >= 50 && CPU_Value < 75)
                 {
-                    if (CPU_Value >= 50 && CPU_Value < 75)
-                    {
-                        CPU_Bar.ForeColor = Color.Yellow;
-                    }
-                    else
-                    {
-                        if (CPU_Value >= 75)
-                        {
-                            CPU_Bar.ForeColor = Color.Red;
-                        }
-                    }
+                    CPU_Bar.ForeColor = Color.Yellow;
+                }
+                else if (CPU_Value >= 75)
+                {
+                    CPU_Bar.ForeColor = Color.Red;
                 }
 
                 //Assigning the Bar Style and percentage filled
@@ -394,6 +388,6 @@ namespace Smiter
         private void ProcessList_CellClick(object sender, DataGridViewCellEventArgs e)
         {
         }
-        //TODO: Try methods update() and refresh() in the datagridview to test for more efficiency
+
     }
 }

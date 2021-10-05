@@ -55,6 +55,7 @@ namespace Smiter
             this.MinimizeBtn = new System.Windows.Forms.Button();
             this.LastTerminatedProcessLabel = new System.Windows.Forms.Label();
             this.SearchBox = new System.Windows.Forms.TextBox();
+            this.SearchLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.ProcessList)).BeginInit();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.RR)).BeginInit();
@@ -337,9 +338,8 @@ namespace Smiter
             this.LastTerminatedProcessLabel.AutoSize = true;
             this.LastTerminatedProcessLabel.Location = new System.Drawing.Point(106, 533);
             this.LastTerminatedProcessLabel.Name = "LastTerminatedProcessLabel";
-            this.LastTerminatedProcessLabel.Size = new System.Drawing.Size(24, 13);
+            this.LastTerminatedProcessLabel.Size = new System.Drawing.Size(0, 13);
             this.LastTerminatedProcessLabel.TabIndex = 12;
-            this.LastTerminatedProcessLabel.Text = "test";
             // 
             // SearchBox
             // 
@@ -349,12 +349,23 @@ namespace Smiter
             this.SearchBox.Size = new System.Drawing.Size(144, 20);
             this.SearchBox.TabIndex = 13;
             // 
+            // SearchLabel
+            // 
+            this.SearchLabel.AutoSize = true;
+            this.SearchLabel.Font = new System.Drawing.Font("Webdings", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(2)));
+            this.SearchLabel.Location = new System.Drawing.Point(7, 68);
+            this.SearchLabel.Name = "SearchLabel";
+            this.SearchLabel.Size = new System.Drawing.Size(25, 19);
+            this.SearchLabel.TabIndex = 14;
+            this.SearchLabel.Text = "L";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(735, 550);
             this.ControlBox = false;
+            this.Controls.Add(this.SearchLabel);
             this.Controls.Add(this.SearchBox);
             this.Controls.Add(this.LastTerminatedProcessLabel);
             this.Controls.Add(this.MinimizeBtn);
@@ -409,6 +420,7 @@ namespace Smiter
         private System.Windows.Forms.CheckBox RefreshAfterTerminationCBox;
         private System.Windows.Forms.Label LastTerminatedProcessLabel;
         private System.Windows.Forms.TextBox SearchBox;
+        private System.Windows.Forms.Label SearchLabel;
     }
 }
 

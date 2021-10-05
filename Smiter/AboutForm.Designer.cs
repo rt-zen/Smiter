@@ -35,6 +35,7 @@ namespace Smiter
             this.topSeparator = new System.Windows.Forms.Label();
             this.BottomSeparator = new System.Windows.Forms.Label();
             this.gitLink = new System.Windows.Forms.LinkLabel();
+            this.AboutText = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // CloseBtn
@@ -92,12 +93,21 @@ namespace Smiter
             this.gitLink.VisitedLinkColor = System.Drawing.Color.Transparent;
             this.gitLink.Click += new System.EventHandler(this.OpenGitPage);
             // 
+            // AboutText
+            // 
+            this.AboutText.Location = new System.Drawing.Point(288, 71);
+            this.AboutText.Name = "AboutText";
+            this.AboutText.Size = new System.Drawing.Size(283, 100);
+            this.AboutText.TabIndex = 5;
+            this.AboutText.Text = resources.GetString("AboutText.Text");
+            // 
             // AboutForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(600, 400);
+            this.Controls.Add(this.AboutText);
             this.Controls.Add(this.gitLink);
             this.Controls.Add(this.BottomSeparator);
             this.Controls.Add(this.AboutLabel);
@@ -120,5 +130,6 @@ namespace Smiter
         private System.Windows.Forms.Label topSeparator;
         private System.Windows.Forms.Label BottomSeparator;
         public System.Windows.Forms.LinkLabel gitLink;
+        private System.Windows.Forms.Label AboutText;
     }
 }
